@@ -1,0 +1,6 @@
+/build/
+/dist/
+/qr_console.egg-info/
+venv
+.idea
+**/__pycache__/

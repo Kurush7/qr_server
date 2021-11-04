@@ -1,0 +1,30 @@
+2021-11-04 17:07:07,424 [INFO]: [AuthService, AuthServiceLogger] - running server on localhost:5005
+2021-11-04 17:07:33,394 [INFO]: [AuthService, AuthServiceLogger] - running server on localhost:5005
+2021-11-04 17:08:02,813 [INFO]: [AuthService, AuthServiceLogger] - [POST] http://localhost:5005/login/
+2021-11-04 17:08:02,813 [ERROR]: [AuthService, AuthServiceLogger] - 'AuthServer' object has no attribute 'db'
+Traceback (most recent call last):
+  File "../FlaskServer.py", line 57, in __method
+    result = f(ctx, *args, **kwargs)
+  File "../RoleManager.py", line 13, in wrapper
+    ctx.repository.set_role(role)
+  File "../IQRRepository.py", line 38, in set_role
+    request = self.db.exec('set role "%s"' % role)
+AttributeError: 'AuthServer' object has no attribute 'db'
+2021-11-04 17:08:30,579 [INFO]: [AuthService, AuthServiceLogger] - running server on localhost:5005
+2021-11-04 17:08:43,623 [INFO]: [AuthService, AuthServiceLogger] - running server on localhost:5005
+2021-11-04 17:08:50,806 [INFO]: [AuthService, AuthServiceLogger] - running server on localhost:5005
+2021-11-04 17:08:52,354 [INFO]: [AuthService, AuthServiceLogger] - [POST] http://localhost:5005/login/
+2021-11-04 17:08:52,354 [ERROR]: [AuthService, AuthServiceLogger] - 'login'
+Traceback (most recent call last):
+  File "../FlaskServer.py", line 57, in __method
+    result = f(ctx, *args, **kwargs)
+  File "/home/kurush/Documents/my_projects/qr_webserver/qr_server/example/auth_service.py", line 15, in login
+    login = ctx.json_data['login']
+KeyError: 'login'
+2021-11-04 17:09:28,715 [INFO]: [AuthService, AuthServiceLogger] - [0 msecs][POST] http://localhost:5005/login/
+2021-11-04 17:09:41,016 [INFO]: [AuthService, AuthServiceLogger] - [0 msecs][POST] http://localhost:5005/login/
+2021-11-04 17:10:06,777 [INFO]: [AuthService, AuthServiceLogger] - [0 msecs][GET] http://localhost:5005/info/
+2021-11-04 17:10:17,217 [INFO]: [AuthService, AuthServiceLogger] - [0 msecs][GET] http://localhost:5005/info/
+2021-11-04 17:10:26,287 [INFO]: [AuthService, AuthServiceLogger] - [0 msecs][GET] http://localhost:5005/info/
+2021-11-04 17:10:32,025 [INFO]: [AuthService, AuthServiceLogger] - [0 msecs][GET] http://localhost:5005/info/
+2021-11-04 17:12:08,875 [INFO]: [AuthService, AuthServiceLogger] - running server on localhost:5005
