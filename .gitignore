@@ -3,4 +3,6 @@
 /qr_console.egg-info/
 venv
 .idea
+**/*.log
+setup.py
 **/__pycache__/
