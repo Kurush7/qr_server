@@ -1,4 +1,4 @@
-import IQRRepository as rep
+import Repository as rep
 
 users = [('user1', 'pass1'), ('user2', 'pass2')]
 

@@ -1,11 +1,11 @@
 from abc import abstractmethod, abstractproperty
-import QRConfig as conf
+from .Config import *
 from qrookDB.DB import DB
 
 class IQRRepository:
     """abstract class representing the Repository object - one providing data-managing functions"""
     @abstractmethod
-    def connect_repository(self, configuration: conf.IQRConfig):
+    def connect_repository(self, configuration: IQRConfig):
         """initialize repository with configuration given"""
 
     @abstractmethod
@@ -16,7 +16,7 @@ class QRRepository(IQRRepository):
     def __init__(self):
         self.db = None
 
-    def connect_repository(self, config: conf.IQRConfig):
+    def connect_repository(self, config: IQRConfig):
         conn = [config['connector'],
                 config['dbname'],
                 config['username'],

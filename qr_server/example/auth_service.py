@@ -5,8 +5,8 @@ from TokenManager import *
 from AuthRepository import *
 
 from FlaskServer import *
-from IQRServer import *
-from QRConfig import *
+from Server import *
+from Config import *
 from RoleManager import *
 from auth_dtos import *
 

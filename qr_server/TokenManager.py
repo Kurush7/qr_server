@@ -1,8 +1,8 @@
 import datetime
 import jwt
-from IQRServer import *
 from abc import abstractmethod
 
+from .Server import *
 
 class ITokenManager(IQRManager):
     @staticmethod
@@ -10,7 +10,7 @@ class ITokenManager(IQRManager):
         return "token_manager"
 
     @abstractmethod
-    def load_config(self, config: conf.IQRConfig):
+    def load_config(self, config: IQRConfig):
         """define tokenizing parameters"""
 
     @abstractmethod
@@ -37,7 +37,7 @@ class JwtTokenManager(ITokenManager):
     def expired_exception(self):
         return jwt.exceptions.ExpiredSignatureError
 
-    def load_config(self, config: conf.IQRConfig):
+    def load_config(self, config: IQRConfig):
         self.secret = config['secret']
         self.algorithm = config['algorithm']
         self.exp = config['exp_seconds']
@@ -89,7 +89,7 @@ def require_token(ignore_expired=False, send_token=False, send_db_role=False):
 
 
 class MockTokenManager(ITokenManager):
-    def load_config(self, config: conf.IQRConfig):
+    def load_config(self, config: IQRConfig):
         pass
 
     def make_token(self, user_id: int, payload: dict = None):

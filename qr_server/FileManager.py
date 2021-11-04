@@ -1,8 +1,8 @@
 from flask import send_from_directory
-from IQRServer import *
 from abc import abstractmethod
 import os.path
 
+from .Server import *
 
 class IFileManager(IQRManager):
     @staticmethod

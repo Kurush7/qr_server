@@ -8,7 +8,11 @@ See 'example' directory for a minimal working application built using this libra
 
 ### Usage example:
 ```python
-from qr_server import *
+from qr_server.Server import MethodResult, QRContext
+from qr_server.Config import QRYamlConfig
+from qr_server.TokenManager import require_token, JwtTokenManager
+from qr_server.FlaskServer import FlaskServer
+
 
 def login(ctx: QRContext):
     login = ctx.json_data['login']

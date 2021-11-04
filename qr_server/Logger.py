@@ -1,12 +1,12 @@
 import logging
 from abc import abstractmethod, abstractproperty
-import QRConfig as conf
+from .Config import *
 
 # todo manage logging to different places
 
 class IQRLogger:
     @abstractmethod
-    def configure_logger(self, config: conf.IQRConfig):
+    def configure_logger(self, config: IQRConfig):
         """configure logger"""
 
     @abstractmethod
@@ -31,7 +31,7 @@ class QRLogger(IQRLogger):
         self.logger = logging.getLogger()
 
     # todo log error here
-    def configure_logger(self, config: conf.IQRConfig):
+    def configure_logger(self, config: IQRConfig):
         logger = logging.getLogger(config['logger_name'])
         logger.addHandler(get_stream_handler(config['level'].upper()))
         if config['file']:

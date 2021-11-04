@@ -1,8 +1,8 @@
 from abc import abstractmethod, abstractproperty
-import IQRRepository as rep
-import QRLogger as log
-import QRConfig as conf
-import dto_converter as dto
+from .Repository import *
+from .Logger import *
+from .Config import *
+from .dto_converter import *
 
 class IQRManager:
     """abstract manager class"""
@@ -16,7 +16,7 @@ class QRContext:
     """object representing the request context, providing wrap around request's body and headers
     as well as repository instance and other possible managers"""
 
-    def __init__(self, json_data, params, headers, form, files, repository: rep.IQRRepository):
+    def __init__(self, json_data, params, headers, form, files, repository: IQRRepository):
         self.__json_data = json_data
         self.__params = params
         self.__headers = headers
@@ -64,16 +64,16 @@ class MethodResult:
     def __init__(self, result=None, status_code=None, raw_data=False):
         if status_code is None: status_code = 200
         self.result = result
-        if isinstance(result, dto.QRDTO):
+        if isinstance(result, QRDTO):
             self.result = self.result.to_dict()
 
         self.status_code = status_code
         self.raw_data = raw_data
 
 
-class IQRServer(rep.IQRRepository, log.IQRLogger, IQRContextCreator):
+class IQRServer(IQRRepository, IQRLogger, IQRContextCreator):
     @abstractmethod
-    def init_server(self, configuration: conf.IQRConfig):
+    def init_server(self, configuration: IQRConfig):
         """initialize server"""
 
     @abstractmethod

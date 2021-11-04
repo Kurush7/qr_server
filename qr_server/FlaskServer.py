@@ -4,27 +4,27 @@ from flask import request
 import time
 import gevent.pywsgi
 
-from IQRServer import *
+from .Server import *
 
 
 class FlaskContextCreator(IQRContextCreator):
-    def create_context(self, request, rep: rep.IQRRepository) -> QRContext:
+    def create_context(self, request, rep: IQRRepository) -> QRContext:
         json = request.get_json()
         if json is None:
             json = dict()
         return QRContext(json, request.args, request.headers, request.form, request.files, rep)
 
 
-class FlaskServer(IQRServer, FlaskContextCreator, log.QRLogger):
+class FlaskServer(IQRServer, FlaskContextCreator, QRLogger):
     def __init__(self):
         FlaskContextCreator.__init__(self)
-        log.QRLogger.__init__(self)
+        QRLogger.__init__(self)
         self.app = None
         self.debug = None
         self.methods = {}
         self.managers = dict()
 
-    def init_server(self, config: conf.IQRConfig):
+    def init_server(self, config: IQRConfig):
         app_name = config['app_name']
         if app_name is None: app_name = 'app'
 

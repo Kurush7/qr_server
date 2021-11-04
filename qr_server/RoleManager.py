@@ -1,4 +1,4 @@
-from IQRServer import QRContext
+from .Server import QRContext
 
 
 def role_manager(default_role='guest'):

@@ -10,7 +10,7 @@ class IQRConfig:
 
     @abstractmethod
     def read_config(self, *args):
-        """read config and make fields avalable either as 'get' methods or as object's properties"""
+        """read config and make fields available either as 'get' methods or as object's properties"""
 
     @abstractmethod
     def get(self, key: str):
