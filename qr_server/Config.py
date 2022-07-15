@@ -27,6 +27,10 @@ class QRYamlConfig(IQRConfig):
     def __getitem__(self, key):
         return self.data.get(key)
 
+    def __setitem__(self, key, value):
+        self.data[key] = value
+        self.__dict__[key] = value
+
     def get(self, key):
         return self.data.get(key)
 
@@ -45,12 +49,12 @@ class QRYamlConfig(IQRConfig):
     def __parse_dict(self, d):
         if not isinstance(d, OrderedDict):
             # d is string here
-            if isinstance(d, bool):
-                return d
-            elif isinstance(d, int):
-                return d
-            elif d.replace('.', '', 1).isdigit():
-                return float(d)
+            # if isinstance(d, bool):
+            #     return d
+            # elif isinstance(d, int):
+            #     return d
+            # elif d.replace('.', '', 1).isdigit():
+            #     return float(d)
             return d
 
         obj = QRYamlConfig()

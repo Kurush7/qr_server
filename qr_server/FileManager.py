@@ -13,6 +13,7 @@ class IFileManager(IQRManager):
     def send_file(self, dirname, filename):
         """send file"""
 
+
 class FlaskFileManager(IFileManager):
     def __init__(self):
         self.secret = None
