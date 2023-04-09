@@ -1,6 +1,6 @@
 from flask import Flask, jsonify
 from flask_cors import CORS
-from flask import request
+from flask import request, Response
 import time
 import gevent.pywsgi
 
@@ -8,21 +8,25 @@ from .Server import *
 
 
 class FlaskContextCreator(IQRContextCreator):
-    def create_context(self, request, rep: IQRRepository) -> QRContext:
-        json = request.get_json()
+    def create_context(self, request, rep: IQRRepository, meta: dict) -> QRContext:
+        json = request.get_json(silent=True)
         if json is None:
             json = dict()
-        return QRContext(json, request.args, request.headers, request.form, request.files, rep)
+        return QRContext(json, request.args, request.headers, request.form, request.files, rep, meta)
 
 
 class FlaskServer(IQRServer, FlaskContextCreator, QRLogger):
-    def __init__(self):
+    def __init__(self, default_err_code=500, default_err_msg='Internal server error'):
         FlaskContextCreator.__init__(self)
         QRLogger.__init__(self)
         self.app = None
         self.debug = None
         self.methods = {}
         self.managers = dict()
+        self.meta = dict()
+
+        self.default_err_code = default_err_code
+        self.default_err_msg = default_err_msg
 
     def init_server(self, config: IQRConfig):
         app_name = config['app_name']
@@ -49,7 +53,7 @@ class FlaskServer(IQRServer, FlaskContextCreator, QRLogger):
             self.app.route(route, methods=[method_type])(func)
 
     def __method(self, f, *args, **kwargs):
-        ctx = super().create_context(request, self)
+        ctx = super().create_context(request, self, meta=self.meta)
         ctx.set_managers(self.managers)
         in_msg = '[' + request.method + '] ' + request.url + '/' + request.query_string.decode()
         try:
@@ -58,16 +62,25 @@ class FlaskServer(IQRServer, FlaskContextCreator, QRLogger):
             end = time.time()
             msecs = int((end - start) * 1000)
             super().info('[' + str(msecs) + ' msecs]' + in_msg)
+
             if result.raw_data:
-                return result.result
-            if result.status_code == 200:
-                return jsonify(result.result)
+                resp = Response(result.result, result.status_code)
             else:
-                return result.result, result.status_code
+                resp = jsonify(result.result)
+                resp.status_code = result.status_code
+
+            if result.headers is not None:
+                for header, value in result.headers.items():
+                    resp.headers[header] = value
+            return resp
+
         except Exception as e:
             super().info(in_msg)
             super().exception(e)
-            return 'Internal server error', 500
+            return self.default_err_msg, self.default_err_code
 
     def register_manager(self, manager: IQRManager):
         self.managers[manager.get_name()] = manager
+
+    def set_meta(self, meta: dict):
+        self.meta = meta

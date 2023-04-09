@@ -16,7 +16,7 @@ class QRContext:
     """object representing the request context, providing wrap around request's body and headers
     as well as repository instance and other possible managers"""
 
-    def __init__(self, json_data, params, headers, form, files, repository: IQRRepository):
+    def __init__(self, json_data, params, headers, form, files, repository: IQRRepository, meta=None):
         self.__json_data = json_data
         self.__params = params
         self.__headers = headers
@@ -24,6 +24,10 @@ class QRContext:
         self.__form = form
         self.__files = files
         self.managers = dict()
+
+        if meta is None:
+            meta = dict()
+        self.meta = meta
 
     def get_json_data(self): return self.__json_data
 
@@ -61,7 +65,7 @@ class IQRContextCreator:
 
 
 class MethodResult:
-    def __init__(self, result=None, status_code=None, raw_data=False):
+    def __init__(self, result=None, status_code=None, raw_data=False, headers=None):
         if status_code is None: status_code = 200
         self.result = result
         if isinstance(result, QRDTO):
@@ -69,6 +73,7 @@ class MethodResult:
 
         self.status_code = status_code
         self.raw_data = raw_data
+        self.headers = headers
 
 
 class IQRServer(IQRRepository, IQRLogger, IQRContextCreator):
